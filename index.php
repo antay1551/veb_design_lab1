@@ -150,18 +150,23 @@ session_start();
 								$obj_selectUser= new selectUser();
 								$res_select=$obj_selectUser->get_all();
 								//print_r($res_select);
-								for($i=0;$i<count($res_select);$i++){
-									$all_str=$res_select[$i]['id'].'. '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
-									echo "$all_str"."<br>";
+								if($_SESSION['role']=='admin'){
+									for($i=0;$i<count($res_select);$i++){
+										$all_str='<a href="connection_user.php?id=1">'.$res_select[$i]['id'].'</a> . '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
+										echo "$all_str"."<br>";
+									}
 								}
-								
+								else {
+								if($_SESSION['role']=='admin'){
+									for($i=0;$i<count($res_select);$i++){
+										$all_str=$res_select[$i]['id'].'. '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
+										echo "$all_str"."<br>";
+									}
+								}	
+									
+									
+								}
 								echo"777";
-							    //session_start();
-								//echo $_COOKIE["Test"];
-								//echo 'Привет, ' . $_COOKIE['role'] . '!';
-								//echo $_SESSION['role1'];
-								//echo $_SESSION['login1'];
-								//echo $_SESSION['time1'];
 								print_r($_SESSION);
 								print("123");
 								

@@ -14,7 +14,7 @@ abstract class Getter {
 	}
 	
 	
-	class Connection extends Getter{
+	class ConnectionClass extends Getter{
 		public $db;
 		public $login;
 		public $password;
@@ -81,9 +81,40 @@ abstract class Getter {
 		
 	}
 
+	
+	class selectLoginUser {
 
+    static public $con;
+   function __construct(  ){
+        self::$con = Connection::get_instance()->dbh;
+    }
+
+    static public function get_login($id){
+        $records = [];
+        $res = self::$con->query("SELECT * FROM login_table WHERE id='$id'");
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)){
+            $records[] = $row;
+        }
+        return $records;
+    }
+	static public function get_all($id){
+        $records = [];
+        $res = self::$con->query("SELECT * FROM user_info WHERE id='$id'");
+        while ($row = $res->fetch(PDO::FETCH_ASSOC)){
+            $records[] = $row;
+        }
+        return $records;
+    }
+
+}
+
+	
+	
+	
+	
+	if( ! isset($_SESSION['login'])){
 		if (isset($_POST['login']) && isset($_POST['password'] )) { 
-			$obj_class_Connection =  new Connection( $_POST['login'],  $_POST['password'] );
+			$obj_class_Connection =  new ConnectionClass( $_POST['login'],  $_POST['password'] );
 		}
 		
 		$obj_class_Connection->connect();
@@ -118,6 +149,19 @@ abstract class Getter {
 
 			//нужно для того что-бы вывести картинку в html
 			$img_adress = $row_user_info[4];
+			
+			}else {
+				$id = $_GET['id'];
+				echo"$id";
+				require_once 'connection.php';
+				$obj_selectLoginUser= new selectLoginUser();
+				$res_selectLogin=$obj_selectLoginUser->get_login($id);
+				$res_selectInfo=$obj_selectLoginUser->get_all($id);
+				
+				print_r($res_selectLogin);
+				print_r($res_selectInfo);
+			
+			}
 			?>
 			
 			
@@ -145,10 +189,8 @@ abstract class Getter {
 			
 				<div class="center_box">
 				<a href="login.html">Login</a>
+				<a href="index.html">Home page</a>
 					<div class="wrapper">
-
-						
-						
 						<div class="logo_box">
 							<a href="index.html"><img src="img/logo.png" alt="foodclub" /></a>
 						</div>
@@ -240,10 +282,39 @@ abstract class Getter {
 					<a href="#"><span>Settings</span></a>
 				</div>
 				<div class="page_content bg_gray">
-
+					<div class="uo_header">
+						<div class="wrapper cf">
+							<div class="wbox ava">
+								<figure><img src="imgc/user_ava_1_140.jpg" alt="Helena Afrassiabi" /></figure>
+							</div>
+							<div class="main_info">
+								<h1>Helena Afrassiabi</h1>
+								<div class="midbox">
+									<h4>560 points</h4>
+									<div class="info_nav">
+										<a href="#">Get Free Points</a>
+										<span class="sepor"></span>
+										<a href="#">Win iPad</a>
+									</div>
+								</div>
+								<div class="stat">
+									<div class="item">
+										<div class="num">30</div>
+										<div class="title">total orders</div>
+									</div>
+									<div class="item">
+										<div class="num">14</div>
+										<div class="title">total reviews</div>
+									</div>
+									<div class="item">
+										<div class="num">0</div>
+										<div class="title">total gifts</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					
-								
-
 					<div class="uo_body">
 						<div class="wrapper">
 							<div class="uofb cf">
@@ -253,43 +324,33 @@ abstract class Getter {
 									<form action="" method="">
 										<div class="field">
 											<label>Name *</label>
-											<input type="text" id="name" value="<?php echo"$user_name";?>" palceholder="" class="vl_empty" />
+											<input type="text" id="name" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
-											<label>surname *</label>
-											<input type="text" id="surname" value="<?php echo"$user_last_name";?>" palceholder="" class="vl_empty" />
+											<label>Surname *</label>
+											<input type="text" id="surname" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
-											<label>pwd *</label>
+											<label>Password *</label>
 											<input type="text" id="password" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
-											<label>report pwd *</label>
+											<label>report Password *</label>
 											<input type="text" id="report_password" value="" palceholder="" class="vl_empty" />
 										</div>
-										
 										<div class="field">
-											<label>role *</label>
-											<select class="vl_empty" id="city">
+											<label>Role *</label>
+											<select class="vl_empty" id="role">
 												<option class="plh"></option>
 												<option value="admin">admin</option>
 												<option value="user">user</option>
 											</select>
 										</div>
 										
-										<div class="field">
-											<label>Street</label>
-											<input type="text" id="street" value="" palceholder="" class="vl_empty" />
-										</div>
-										<div class="field">
-											<label>House # </label>
-											<input type="text" id="house" value="" palceholder="House Name / Number" />
-										</div>
 										
-										<div class="field">
-											<label class="pos_top">Additional information</label>
-											<textarea id="information"></textarea>
-										</div>
+										
+										
+										
 										
 										<div class="field">
 											<input type="submit" value="add address" onclick="sendInformations()" class="green_btn" />
@@ -299,32 +360,12 @@ abstract class Getter {
 
                                 <div class="r_col">
                                     <h2>My Addresses</h2>
-                                    <div class="uo_adr_list">
-                                        
-										
-										<div class="item">
-                                            <h3>HOME Address</h3>
-                                            <div class="actbox">
-                                                <a href="#" class="bcross"></a>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
+                                    
                                 </div>
 
 							</div>
 						</div>
 					</div>
-			
-			
-			
-								
-								
-								
-								
-								
-								
-
 				</div>
 			</div>
 		</div>
