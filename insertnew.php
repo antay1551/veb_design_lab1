@@ -1,6 +1,12 @@
-<?php 
-session_start();
+<?php
+	session_start();
+
+
 ?>
+
+			
+			
+			
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -24,12 +30,8 @@ session_start();
 			
 				<div class="center_box">
 				<a href="login.html">Login</a>
-				<a href="logout.php">Log out</a>
-
+				<a href="index.html">Home page</a>
 					<div class="wrapper">
-
-						
-						
 						<div class="logo_box">
 							<a href="index.html"><img src="img/logo.png" alt="foodclub" /></a>
 						</div>
@@ -121,65 +123,90 @@ session_start();
 					<a href="#"><span>Settings</span></a>
 				</div>
 				<div class="page_content bg_gray">
-
+					<div class="uo_header">
+						<div class="wrapper cf">
+							<div class="wbox ava">
+								<figure><img src="" alt="Helena Afrassiabi" /></figure>
+							</div>
+							<div class="main_info">
+								<h1>Helena Afrassiabi</h1>
+								<div class="midbox">
+									<h4>560 points</h4>
+									<div class="info_nav">
+										<a href="#">Get Free Points</a>
+										<span class="sepor"></span>
+										<a href="#">Win iPad</a>
+									</div>
+								</div>
+								<div class="stat">
+									<div class="item">
+										<div class="num">30</div>
+										<div class="title">total orders</div>
+									</div>
+									<div class="item">
+										<div class="num">14</div>
+										<div class="title">total reviews</div>
+									</div>
+									<div class="item">
+										<div class="num">0</div>
+										<div class="title">total gifts</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 					
 					<div class="uo_body">
 						<div class="wrapper">
 							<div class="uofb cf">
-								
-
-								<?php
-							
-								class selectUser {
-									static public $con;
-									function __construct(  ){
-										self::$con = Connection::get_instance()->dbh;
-									}
-
-									static public function get_all(){
-										$records = [];
-										$res = self::$con->query("SELECT * FROM user_info");
-										while ($row = $res->fetch(PDO::FETCH_ASSOC)){
-										$records[] = $row;
-										}
-										return $records;
-									}
-
-								}
-								
-								require_once 'connection.php';
-								
-								$obj_selectUser= new selectUser();
-								$res_select=$obj_selectUser->get_all();
-								//print_r($res_select);
-								if($_SESSION['role']=='admin'){
-									for($i=0;$i<count($res_select);$i++){
-										$id = $res_select[$i]['id'];
-										$all_str='<a href="connection_user.php?id='.$id.'">'.$res_select[$i]['id'].'</a> . '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
-										$all_str=$all_str.'<a href="delete_user.php?id='.$id.'">delete</a>';
-										
-										//var_dump($all_str);
-										echo "$all_str"."<br>";
-										
-									}
-									?>
-										<form action="insertnew.php" method="post">
-										<input type="submit" value="add new"></form>
-										<?php
-								}
-								else {
-									for($i=0;$i<count($res_select);$i++){
-										$all_str=$res_select[$i]['id'].'. '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
-										echo "$all_str"."<br>";
-									}
-																
+								<div class="l_col adrs">
+									<h2>Add New Address</h2>
 									
-								}
-								echo"777";
-								print_r($_SESSION);
-								print("123");
-								
-						?>
+									<form action="change.php" method="post">
+										<div class="field">
+											<label>Login *</label>
+											<input type="text" id="login" name="login" value="" palceholder="" class="vl_empty" />
+										</div>
+										<div class="field">
+											<label>Name *</label>
+											<input type="text" id="name" name="name" value="" palceholder="" class="vl_empty" />
+										</div>
+										<div class="field">
+											<label>Surname *</label>
+											<input type="text" id="surname" name="surname" value="" palceholder="" class="vl_empty" />
+										</div>
+										<div class="field">
+											<label>Password *</label>
+											<input type="text" id="password" name="password" value="" palceholder="" class="vl_empty" />
+										</div>
+										<div class="field">
+											<label>report Password *</label>
+											<input type="text"  name="report_password" value="" palceholder="" class="vl_empty" />
+										</div>
+										<div class="field">
+											<label>Role *</label>
+											<select class="vl_empty"  id="role" name="role"  value="admin">
+												<option class="plh"></option>
+												<option value="admin">admin</option>
+												<option value="user">user</option>
+											</select>
+										</div>
+										
+										
+										
+										
+										
+										
+										<div class="field">
+											<input type="submit" name = "save" value="add address" class="green_btn" />
+										</div>
+									</form>
+								</div>
+
+                                <div class="r_col">
+                                    <h2>My Addresses</h2>
+                                    
+                                </div>
 
 							</div>
 						</div>

@@ -137,9 +137,14 @@ abstract class Getter {
 
 			$_SESSION['login'] = $row[1];
 			$_SESSION['role'] = $row_user_info[3];
+			$_SESSION['id'] = $row_user_info[0];
+			$_SESSION['change_id'] = $row[0];
+
 			echo $_SESSION['login']."<br>";
 			echo $_SESSION['role']."<br>";
-			
+			echo $_SESSION['id']."<br>";
+			echo $_SESSION['change_id']."<br>";
+
 
 			
 			
@@ -151,12 +156,38 @@ abstract class Getter {
 			$img_adress = $row_user_info[4];
 			
 			}else {
+				$res_selectLogin=[];
+				$res_selectInfo=[];
+				
+				if ( ! isset($_GET['id']) ){
+				require_once 'connection.php';
+				$id = $_SESSION['id'];
+				$obj_selectLoginUser= new selectLoginUser();
+				$res_selectLogin=$obj_selectLoginUser->get_login($id);
+				$res_selectInfo=$obj_selectLoginUser->get_all($id);
+						
+				}else{
 				$id = $_GET['id'];
 				echo"$id";
 				require_once 'connection.php';
 				$obj_selectLoginUser= new selectLoginUser();
 				$res_selectLogin=$obj_selectLoginUser->get_login($id);
 				$res_selectInfo=$obj_selectLoginUser->get_all($id);
+				}
+				$user_name = $res_selectInfo[0]['first_name'];
+				$user_last_name = $res_selectInfo[0]['last_name'];
+				$user_login = $res_selectLogin[0]['login'];
+				$img_adress = $res_selectInfo[0]['photo'];
+				$_SESSION['change_id'] = $res_selectInfo[0]['id'];
+				echo $_SESSION['change_id']."<br>";
+
+				echo"$user_name";
+				echo"some";
+				//$user_last_name = $res_selectInfo[2];
+				//$user_login = $res_selectLogin[1];
+
+			//нужно для того что-бы вывести картинку в html
+			//$img_adress = $row_user_info[4];
 				
 				print_r($res_selectLogin);
 				print_r($res_selectInfo);
@@ -285,7 +316,7 @@ abstract class Getter {
 					<div class="uo_header">
 						<div class="wrapper cf">
 							<div class="wbox ava">
-								<figure><img src="imgc/user_ava_1_140.jpg" alt="Helena Afrassiabi" /></figure>
+								<figure><img src="<?php echo"$img_adress";?>" alt="Helena Afrassiabi" /></figure>
 							</div>
 							<div class="main_info">
 								<h1>Helena Afrassiabi</h1>
@@ -321,26 +352,30 @@ abstract class Getter {
 								<div class="l_col adrs">
 									<h2>Add New Address</h2>
 									
-									<form action="" method="">
+									<form action="change.php" method="post">
+										<div class="field">
+											<label>Login *</label>
+											<input type="text" id="login" name="login" value="<?php echo"$user_login";?>" palceholder="" class="vl_empty" />
+										</div>
 										<div class="field">
 											<label>Name *</label>
-											<input type="text" id="name" value="" palceholder="" class="vl_empty" />
+											<input type="text" id="name" name="name" value="<?php echo"$user_name";?>" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
 											<label>Surname *</label>
-											<input type="text" id="surname" value="" palceholder="" class="vl_empty" />
+											<input type="text" id="surname" name="surname" value="<?php echo"$user_last_name";?>" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
 											<label>Password *</label>
-											<input type="text" id="password" value="" palceholder="" class="vl_empty" />
+											<input type="text" id="password" name="password" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
 											<label>report Password *</label>
-											<input type="text" id="report_password" value="" palceholder="" class="vl_empty" />
+											<input type="text"  name="report_password" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
 											<label>Role *</label>
-											<select class="vl_empty" id="role">
+											<select class="vl_empty"  id="role" name="role"  value="admin">
 												<option class="plh"></option>
 												<option value="admin">admin</option>
 												<option value="user">user</option>
@@ -353,7 +388,7 @@ abstract class Getter {
 										
 										
 										<div class="field">
-											<input type="submit" value="add address" onclick="sendInformations()" class="green_btn" />
+											<input type="submit" name = "edit" value="add address" class="green_btn" />
 										</div>
 									</form>
 								</div>
