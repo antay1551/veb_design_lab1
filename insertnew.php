@@ -29,7 +29,7 @@
 			<header>
 			
 				<div class="center_box">
-				<a href="login.html">Login</a>
+				<a href="login.php">Login</a>
 				<a href="index.html">Home page</a>
 					<div class="wrapper">
 						<div class="logo_box">
@@ -162,7 +162,7 @@
 								<div class="l_col adrs">
 									<h2>Add New Address</h2>
 									
-									<form action="change.php" method="post">
+									<form action="change.php" method="post"  enctype='multipart/form-data'>
 										<div class="field">
 											<label>Login *</label>
 											<input type="text" id="login" name="login" value="" palceholder="" class="vl_empty" />
@@ -191,7 +191,8 @@
 												<option value="user">user</option>
 											</select>
 										</div>
-										
+										Выберите файл: <input type='file' name='filename' size='10' /><br /><br />
+
 										
 										
 										

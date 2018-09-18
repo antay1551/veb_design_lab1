@@ -23,7 +23,7 @@ session_start();
 			<header>
 			
 				<div class="center_box">
-				<a href="login.html">Login</a>
+				<a href="login.php">Login</a>
 				<a href="logout.php">Log out</a>
 
 					<div class="wrapper">
@@ -164,20 +164,24 @@ session_start();
 									}
 									?>
 										<form action="insertnew.php" method="post">
-										<input type="submit" value="add new"></form>
+										<input type="submit" value="add new" class="green_btn"></form>
 										<?php
 								}
 								else {
 									for($i=0;$i<count($res_select);$i++){
-										$all_str=$res_select[$i]['id'].'. '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
+										if($res_select[$i]['id'] == $_SESSION['change_id']){
+											$all_str='<a href="connection_user.php?id='.$_SESSION['change_id'].'">'.$res_select[$i]['id'].'</a> . '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
+										}else{
+											$all_str=$res_select[$i]['id'].'. '.$res_select[$i]['first_name'].' '.$res_select[$i]['last_name'].' '.$res_select[$i]['role'].' '.$res_select[$i]['photo'];
+										}
 										echo "$all_str"."<br>";
 									}
 																
 									
 								}
-								echo"777";
-								print_r($_SESSION);
-								print("123");
+								//echo"777";
+								//print_r($_SESSION);
+								//print("123");
 								
 						?>
 

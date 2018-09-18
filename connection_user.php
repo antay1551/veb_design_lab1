@@ -115,6 +115,8 @@ abstract class Getter {
 	if( ! isset($_SESSION['login'])){
 		if (isset($_POST['login']) && isset($_POST['password'] )) { 
 			$obj_class_Connection =  new ConnectionClass( $_POST['login'],  $_POST['password'] );
+		}else{
+			header('Location: http://lab1/login.php');
 		}
 		
 		$obj_class_Connection->connect();
@@ -128,9 +130,14 @@ abstract class Getter {
 			$row = mysqli_fetch_row($result);
 			$row_user_info = mysqli_fetch_row($result_user_info);
 			//массив со значениями о пользователе ид имя фам и тд
-			print_r($row);
-			print_r($row_user_info);
-			
+			//print_r($row);
+			//print_r($row_user_info);
+			if((! isset($row)) || ((! isset($row_user_info)))){
+				header('Location: http://lab1/login.php');
+				$_SESSION['not_right_login']='not right password or email';
+			}else {
+				$_SESSION['not_right_login']='ok';
+			}
 			//require_once 'session1.php';
 			//$obj_class_session = new sessionClass();
 			//$obj_class_session->add($row_user_info[1],$row_user_info[2]);
@@ -140,10 +147,10 @@ abstract class Getter {
 			$_SESSION['id'] = $row_user_info[0];
 			$_SESSION['change_id'] = $row[0];
 
-			echo $_SESSION['login']."<br>";
-			echo $_SESSION['role']."<br>";
-			echo $_SESSION['id']."<br>";
-			echo $_SESSION['change_id']."<br>";
+			//echo $_SESSION['login']."<br>";
+			//echo $_SESSION['role']."<br>";
+			//echo $_SESSION['id']."<br>";
+			//echo $_SESSION['change_id']."<br>";
 
 
 			
@@ -168,7 +175,7 @@ abstract class Getter {
 						
 				}else{
 				$id = $_GET['id'];
-				echo"$id";
+				//echo"$id";
 				require_once 'connection.php';
 				$obj_selectLoginUser= new selectLoginUser();
 				$res_selectLogin=$obj_selectLoginUser->get_login($id);
@@ -179,18 +186,18 @@ abstract class Getter {
 				$user_login = $res_selectLogin[0]['login'];
 				$img_adress = $res_selectInfo[0]['photo'];
 				$_SESSION['change_id'] = $res_selectInfo[0]['id'];
-				echo $_SESSION['change_id']."<br>";
+				//echo $_SESSION['change_id']."<br>";
 
-				echo"$user_name";
-				echo"some";
+				//echo"$user_name";
+				//echo"some";
 				//$user_last_name = $res_selectInfo[2];
 				//$user_login = $res_selectLogin[1];
 
 			//нужно для того что-бы вывести картинку в html
 			//$img_adress = $row_user_info[4];
 				
-				print_r($res_selectLogin);
-				print_r($res_selectInfo);
+				//print_r($res_selectLogin);
+				//print_r($res_selectInfo);
 			
 			}
 			?>
@@ -352,7 +359,7 @@ abstract class Getter {
 								<div class="l_col adrs">
 									<h2>Add New Address</h2>
 									
-									<form action="change.php" method="post">
+									<form action="change.php" method="post" enctype='multipart/form-data'>
 										<div class="field">
 											<label>Login *</label>
 											<input type="text" id="login" name="login" value="<?php echo"$user_login";?>" palceholder="" class="vl_empty" />
@@ -381,12 +388,7 @@ abstract class Getter {
 												<option value="user">user</option>
 											</select>
 										</div>
-										
-										
-										
-										
-										
-										
+										Выберите файл: <input type='file' name='filename' size='10' /><br /><br />							
 										<div class="field">
 											<input type="submit" name = "edit" value="add address" class="green_btn" />
 										</div>
