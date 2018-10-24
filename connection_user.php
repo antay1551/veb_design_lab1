@@ -214,6 +214,8 @@ abstract class Getter {
   <link href="css/default.css" rel="stylesheet" type="text/css" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="js/send.js"></script>
+  <script src="js/change.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
 
@@ -326,7 +328,7 @@ abstract class Getter {
 								<figure><img src="<?php echo"$img_adress";?>" alt="Helena Afrassiabi" /></figure>
 							</div>
 							<div class="main_info">
-								<h1>Helena Afrassiabi</h1>
+								<h1></h1>
 								<div class="midbox">
 									<h4>560 points</h4>
 									<div class="info_nav">
@@ -359,7 +361,7 @@ abstract class Getter {
 								<div class="l_col adrs">
 									<h2>Add New Address</h2>
 									
-									<form action="change.php" method="post" enctype='multipart/form-data'>
+									<form  method="post" enctype='multipart/form-data' id ="change">
 										<div class="field">
 											<label>Login *</label>
 											<input type="text" id="login" name="login" value="<?php echo"$user_login";?>" palceholder="" class="vl_empty" />
@@ -378,7 +380,7 @@ abstract class Getter {
 										</div>
 										<div class="field">
 											<label>report Password *</label>
-											<input type="text"  name="report_password" value="" palceholder="" class="vl_empty" />
+											<input type="text" id="report_password" name="report_password" value="" palceholder="" class="vl_empty" />
 										</div>
 										<div class="field">
 											<label>Role *</label>
@@ -388,10 +390,10 @@ abstract class Getter {
 												<option value="user">user</option>
 											</select>
 										</div>
-										Выберите файл: <input type='file' name='filename' size='10' /><br /><br />							
+										Выберите файл: <input type='file' id="filename" name='filename' size='10' /><br /><br />
 										<div class="field">
-											<input type="submit" name = "edit" value="add address" class="green_btn" />
-										</div>
+											<input type="submit" name = "edit" id="edit" value="add address" class="green_btn" />
+                                        </div>
 									</form>
 								</div>
 
@@ -474,3 +476,44 @@ abstract class Getter {
 </body>
 
 </html>
+
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        // проверяем поддерживает ли браузер FormData
+        if(!window.FormData) {
+            alert("Браузер не поддерживает загрузку файлов на этом сайте");
+        }
+    }
+
+
+    $(document).ready(function(){
+        // =validation
+        alert("ok");
+        var errorTxt = 'Ошибка отправки';
+        $("#change").validate({
+            submitHandler: function(form){
+                alert("ok1");
+
+                var form = document.forms[0],
+                    formData = new FormData(form),
+                    xhr = new XMLHttpRequest();
+                alert("ok2");
+                console.log(document.forms);
+
+                xhr.open("POST", "http://lab1/change.php");
+                 xhr.onreadystatechange = function() {
+                     if (xhr.readyState == 4) {
+                         if(xhr.status == 200) {
+                             alert("ok3");
+                         }
+                     }
+                 };
+                xhr.send(formData);
+            }
+        });
+    })
+</script>
