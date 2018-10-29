@@ -13,6 +13,7 @@ session_start();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="js/send.js"></script>
     <script src="js/sort.js"></script>
+    <script src="js/find.js"></script>
 </head>
 
 <body onload="load()">
@@ -132,7 +133,7 @@ session_start();
                                     <input type="text" id="find" name="find" value="" palceholder="" class="vl_empty" />
                                 </div>
                                     <div class="field">
-                                        <input type="submit" name = "save" value="find" class="green_btn" />
+                                        <input type="submit" name = "save" value="find" class="green_btn" onclick="findFunction()"/>
                                     </div>
                             </form>
                             <form action="index.php" method="post"  >
